@@ -1,16 +1,35 @@
-Gem::Specification.new do |s|
-  s.name          = "elastic-dsl"
-  # s.version       = ElasticDSL::Rails::VERSION
-  s.version       = '0.0.0'
-  s.authors       = ["Zachary Moshansky"]
-  s.email         = ["karel.minarik@elasticsearch.org"]
-  s.description   = "DSL Builder for Elasticsearch. (Not Affiliated)"
-  s.summary       = "DSL Builder for Elasticsearch."
-  s.homepage      = "https://github.com/zmoshansky/elastic_dsl"
-  s.license       = "Apache 2"
+# coding: utf-8
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'elastic/dsl/version'
 
-  s.files         = `git ls-files`.split($/)
-  s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  s.test_files    = s.files.grep(%r{^(test|spec|features)/})
-  s.require_paths = ["lib"]
+Gem::Specification.new do |spec|
+  spec.name          = 'elastic-dsl'
+  spec.version       = Elastic::DSL::VERSION
+  spec.authors       = ['Zachary Moshansky']
+  spec.email         = ['zmoshansky@gmail.com']
+  spec.description   = 'DSL Builder for Elasticsearch. (Not Affiliated)'
+  spec.summary       = 'DSL Builder for Elasticsearch.'
+  spec.homepage      = 'https://github.com/zmoshansky/elastic-dsl'
+  spec.license       = 'Apache 2'
+
+  spec.files         = `git ls-files -z`.split("\x0")
+  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.require_paths = ['lib']
+
+  spec.add_development_dependency 'bundler', '~> 1.6'
+  spec.add_development_dependency 'rake'
+
+  spec.add_development_dependency 'rspec'
+  spec.add_development_dependency 'rspec-core'
+  spec.add_development_dependency 'rspec-mocks'
+  spec.add_development_dependency 'rspec-expectations'
+
+  spec.add_development_dependency 'guard'
+  spec.add_development_dependency 'guard-bundler'
+  spec.add_development_dependency 'guard-rspec'
+
+  spec.add_development_dependency 'activesupport'
+
 end
