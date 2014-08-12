@@ -30,19 +30,19 @@ describe Elastic::DSL::Builders::Queries::Bool do
         }}
 
         it "constructs the missing bool and #{key} node" do
-          expect(builder.send(key, condition).es_query).to eq(result)
+          expect(builder.public_send(key, condition).es_query).to eq(result)
         end
 
         it "constructs the missing #{key} node" do
           builder.es_query[:query][:bool] = {}
-          expect(builder.send(key, condition).es_query).to eq(result)
+          expect(builder.public_send(key, condition).es_query).to eq(result)
         end
 
         it "merges with existing #{key} node" do
           result[:query][:bool][key].unshift(
               {match: {term: {test_a: 1}}})
           builder = Elastic::DSL::SearchBuilder.new(merge_base)
-          expect(builder.send(key, condition).es_query).to eq(result)
+          expect(builder.public_send(key, condition).es_query).to eq(result)
         end
       end
     end
@@ -106,17 +106,17 @@ describe Elastic::DSL::Builders::Queries::Bool do
         }}
 
         it "constructs the missing bool and #{key} node" do
-          expect(builder.send(key, condition, base[:query][:bool][key]).es_query).to eq(result)
+          expect(builder.public_send(key, condition, base[:query][:bool][key]).es_query).to eq(result)
         end
 
         it "constructs the missing #{key} node" do
           builder.es_query[:query][:bool][key] << {bool: {}}
-          expect(builder.send(key, condition, base[:query][:bool][key]).es_query).to eq(result)
+          expect(builder.public_send(key, condition, base[:query][:bool][key]).es_query).to eq(result)
         end
 
         it "merges with existing #{key} node" do
           builder = Elastic::DSL::SearchBuilder.new(merge_base)
-          expect(builder.send(key, condition, merge_base[:query][:bool][key]).es_query).to eq(merge_result)
+          expect(builder.public_send(key, condition, merge_base[:query][:bool][key]).es_query).to eq(merge_result)
         end
 
       end
