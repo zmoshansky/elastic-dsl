@@ -30,6 +30,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'guard-bundler'
   spec.add_development_dependency 'guard-rspec'
 
-  spec.add_development_dependency 'activesupport'
+  spec.add_development_dependency 'simplecov', '~> 0.9'
+
+  # spec.add_development_dependency 'activesupport'
+  # Hash with Indifferent Access
 
 end
