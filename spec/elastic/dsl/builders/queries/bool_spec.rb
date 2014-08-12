@@ -1,5 +1,4 @@
 require 'spec_helper'
-# require 'elastic/dsl/errors/base_error'
 
 describe Elastic::DSL::Builders::Queries::Bool do
 

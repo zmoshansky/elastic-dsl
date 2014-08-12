@@ -1,7 +1,4 @@
 require 'spec_helper'
-require 'active_support/hash_with_indifferent_access'
-
-# require 'elastic/dsl/errors/base_error'
 
 describe Elastic::DSL::Builders::Utils do
 
@@ -68,34 +65,59 @@ describe Elastic::DSL::Builders::Utils do
   end
 
   describe '.find_node' do
-    let(:root_node) { HashWithIndifferentAccess.new(query: {test: 'test'}) }
-    let(:root_node2) { {query: {test: 'test'}} }
+    let(:root_node) { {query: {test: 'test'}} }
 
     it 'raises ArgumentError with blank node_list' do
       expect{builder.find_node([], root_node)}.to raise_error(ArgumentError)
     end
 
     it 'raises NodeNotFound error when it doesn\'t exist' do
-      expect{builder.find_node(['bob'], root_node)}.to raise_error(Elastic::DSL::Errors::NodeNotFound)
+      expect{builder.find_node([:bob], root_node)}.to raise_error(Elastic::DSL::Errors::NodeNotFound)
     end
 
     it 'returns the node from an array of keys' do
-      expect(builder.find_node(['query'], root_node)).to eq(root_node[:query])
+      expect(builder.find_node([:query], root_node)).to eq(root_node[:query])
     end
 
     it 'returns the node from a single key' do
-      expect(builder.find_node('query', root_node)).to eq(root_node[:query])
+      expect(builder.find_node(:query, root_node)).to eq(root_node[:query])
     end
 
     it 'returns the nested node' do
-      expect(builder.find_node(['query', 'test'], root_node)).to eq(root_node[:query][:test])
-    end
-
-    # Fails without hashwithindifferentaccess
-    xit 'returns the nested node without hashwithindifferentaccess' do
-      expect(builder.find_node(['query', 'test'], root_node2)).to eq(root_node[:query][:test])
+      expect(builder.find_node([:query, :test], root_node)).to eq(root_node[:query][:test])
     end
   end
+
+  # Indifferent Access Hash
+  # describe '.find_node' do
+  #   let(:root_node) { {query: {test: 'test'}} }
+  #   # let(:root_node2) { HashWithIndifferentAccess.new(query: {test: 'test'}) }
+
+  #   it 'raises ArgumentError with blank node_list' do
+  #     expect{builder.find_node([], root_node)}.to raise_error(ArgumentError)
+  #   end
+
+  #   it 'raises NodeNotFound error when it doesn\'t exist' do
+  #     expect{builder.find_node(['bob'], root_node)}.to raise_error(Elastic::DSL::Errors::NodeNotFound)
+  #   end
+
+  #   it 'returns the node from an array of keys' do
+  #     expect(builder.find_node(['query'], root_node)).to eq(root_node[:query])
+  #   end
+
+  #   it 'returns the node from a single key' do
+  #     expect(builder.find_node('query', root_node)).to eq(root_node[:query])
+  #   end
+
+  #   it 'returns the nested node' do
+  #     expect(builder.find_node(['query', 'test'], root_node)).to eq(root_node[:query][:test])
+  #   end
+
+  #   # Fails without hashwithindifferentaccess
+  #   xit 'returns the nested node without hashwithindifferentaccess' do
+  #     expect(builder.find_node(['query', 'test'], root_node2)).to eq(root_node[:query][:test])
+  #   end
+  # end
 
   describe '.blank?' do
     it 'returns true for single args' do

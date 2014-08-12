@@ -1,4 +1,3 @@
-# require 'elastic/dsl/errors/base_error'
 module Elastic
   module DSL
     module Builders
