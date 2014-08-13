@@ -24,7 +24,10 @@ module Elastic
         return find_node(node_keys, es_query)
       end
 
-    end
+      def size(size)
+        es_query[:size] = size
+      end
 
+    end
   end
 end
