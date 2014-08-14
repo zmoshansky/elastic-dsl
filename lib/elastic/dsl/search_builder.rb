@@ -20,12 +20,17 @@ module Elastic
         @es_query ||= search_query
       end
 
-      def node(node_keys)
+      def node?(node_keys)
         return find_node(node_keys, es_query)
       end
 
       def size(size)
         es_query[:size] = size
+        return self
+      end
+
+      def size?
+        es_query[:size]
       end
 
     end

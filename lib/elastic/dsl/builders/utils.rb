@@ -2,6 +2,7 @@ module Elastic
   module DSL
     module Builders
       module Utils
+        include Elastic::DSL::Errors
 
         def deeper_merge(this_hash, other_hash, key, &block)
           deeper_merge!(this_hash.dup, other_hash, key, &block)
@@ -31,22 +32,27 @@ module Elastic
         end
 
         # Accepts a single or list of keys and starts searching at root_node
+        # Returns the value a node maps to like a hash accessor (a_hash[:test])
+        # Raises an exception otherwise, exception needed to allow the return of nil, false
         def find_node(node_keys, root_node)
-          raise ArgumentError.new('node_keys blank') if blank?(node_keys)
+          raise Elastic::DSL::Errors::InvalidArgument.new('node_keys blank') if blank?(node_keys)
           # raise ArgumentError.new('root_node must be of type hash_with_indifferent_access') unless root_node.is_a?(HashWithIndifferentAccess)
           node_keys = key_to_array(node_keys)
 
           node_keys.each_with_index do |k, index|
             if root_node.is_a?(Array)
-              temp = root_node.find { |i| i.key?(k) }
-              raise Elastic::DSL::Errors::NodeNotFound.new(index) unless temp
+              temp = root_node.find do |i|
+                raise Elastic::DSL::Errors::InvalidQuery.new('Only hashes are allowed in es_query arrays') unless i.is_a?(Hash)
+                i.key?(k)
+              end
+
+              raise Elastic::DSL::Errors::NodeNotFound.new("node '#{node_keys[index]}' was not found at node_keys[#{index}]") unless temp
               root_node = temp[k]
             else
+              raise Elastic::DSL::Errors::NodeNotFound.new("node '#{node_keys[index]}' was not found at node_keys[#{index}]") unless root_node.key?(k)
               root_node = root_node[k]
             end
-            raise Elastic::DSL::Errors::NodeNotFound.new(index) unless root_node
           end
-
           return root_node
         end
 

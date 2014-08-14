@@ -4,6 +4,8 @@ Elastic DSL is a highly modular gem to support simple dynamic construction of qu
 
 Once this has a bit more meat to it, I plan on submitting it to [elastic-search][1].
 
+**!! Warning !!**  This is under active development and I don't promise a stable API pre v 0.1.0 (Sorry Semantic Versioning, but you're on a time out)
+
 ## Installation
 
 Add this line to your application's Gemfile:

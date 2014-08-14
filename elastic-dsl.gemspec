@@ -31,6 +31,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'guard-rspec'
   spec.add_development_dependency 'terminal-notifier-guard'
 
+  spec.add_development_dependency 'pry-byebug'
+
   spec.add_development_dependency 'simplecov', '~> 0.9'
 
   # spec.add_development_dependency 'activesupport'
