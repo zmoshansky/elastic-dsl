@@ -35,25 +35,45 @@ module Elastic
         # Returns the value a node maps to like a hash accessor (a_hash[:test])
         # Raises an exception otherwise, exception needed to allow the return of nil, false
         def find_node(node_keys, root_node)
-          raise Elastic::DSL::Errors::InvalidArgument.new('node_keys blank') if blank?(node_keys)
-          # raise ArgumentError.new('root_node must be of type hash_with_indifferent_access') unless root_node.is_a?(HashWithIndifferentAccess)
+          raise Elastic::DSL::Errors::InvalidArgument, 'node_keys blank' if blank?(node_keys)
+          # raise ArgumentError, 'root_node must be of type hash_with_indifferent_access' unless root_node.is_a?(HashWithIndifferentAccess)
           node_keys = key_to_array(node_keys)
 
           node_keys.each_with_index do |k, index|
             if root_node.is_a?(Array)
               temp = root_node.find do |i|
-                raise Elastic::DSL::Errors::InvalidQuery.new('Only hashes are allowed in es_query arrays') unless i.is_a?(Hash)
+                raise Elastic::DSL::Errors::InvalidQuery, 'Only hashes are allowed in es_query arrays' unless i.is_a?(Hash)
                 i.key?(k)
               end
-
-              raise Elastic::DSL::Errors::NodeNotFound.new("node '#{node_keys[index]}' was not found at node_keys[#{index}]") unless temp
+              raise Elastic::DSL::Errors::NodeNotFound.new(index, "node '#{node_keys[index]}' was not found at node_keys[#{index}]") unless temp
               root_node = temp[k]
             else
-              raise Elastic::DSL::Errors::NodeNotFound.new("node '#{node_keys[index]}' was not found at node_keys[#{index}]") unless root_node.key?(k)
+              raise Elastic::DSL::Errors::NodeNotFound.new(index, "node '#{node_keys[index]}' was not found at node_keys[#{index}]") unless root_node.key?(k)
               root_node = root_node[k]
             end
           end
           return root_node
+        end
+
+        # Finds or creates the nodes specified
+        # TODO find better way of passing values than node_keys to allow creation of arrays
+        # Ideally allow for objects to be searched for too
+        def foc_node!(node_keys, root_node)
+          find_node(node_keys, root_node)
+        rescue Elastic::DSL::Errors::NodeNotFound => e
+          parent = find_node(node_keys[0..e.index-1], root_node)
+          return create_nodes!(node_keys[e.index-1..-1], parent)
+        end
+
+        # creates the nodes overwriting any old ones, returning the parent node of the last key
+        def create_nodes!(node_keys, parent)
+          last_parent = nil
+          p = Proc.new do |key|
+            last_parent = parent
+            parent = parent[key] = {}
+          end
+          node_keys.each &p
+          return last_parent
         end
 
         def blank?(*objs)

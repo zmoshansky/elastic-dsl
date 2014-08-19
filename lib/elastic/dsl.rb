@@ -1,4 +1,4 @@
-require 'elastic/dsl/errors/base_error'
+require 'elastic/dsl/exceptions'
 
 require 'elastic/dsl/builders/utils'
 require 'elastic/dsl/builders/filters/all'

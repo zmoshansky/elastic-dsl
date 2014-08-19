@@ -1,5 +1,10 @@
 # ChangeLog
 
+V 0.0.3
+ - [Feature] Added Range Filter
+ - [Feature] Added Tests for Errors
+ - **[Breaking Change]** Renamed Error base class to Error and moved to ../exceptions.rb
+
 V 0.0.2
  - **[Breaking Change]** Interface for bool has changed to use an options hash, previously optional "root_node" arg is now {root: some_root}
  - **[Breaking Change]** SearchBuilder#node renamed to node?

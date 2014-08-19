@@ -131,6 +131,53 @@ describe Elastic::DSL::Builders::Utils do
 
   end
 
+  # describe '.foc_node!' do
+
+  #   let(:node_value) {'value'}
+  #   let(:wrong_value) {'bad_value'}
+
+  #   let(:root_node) { {query: {
+  #     nested_array: [{jimmy: wrong_value}, {mark: node_value}],
+  #     nested_hash: {ashleigh: true},
+  #   }} }
+
+  #   let(:foc_hash) { {query: {
+  #     nested_hash: {ashleigh: true, not_a_node: nil},
+  #   }} }
+
+
+  #   context 'creates the node' do
+
+  #     it 'when a node doesn\'t exist in a hash' do
+  #       expect(utils.foc_node!([:query, :nested_hash, :not_a_node], root_node)).to eq(foc_hash[:query][:nested_hash][:not_a_node])
+  #     end
+
+  #     it 'when a node doesn\'t exist in an array' do
+  #       expect(utils.foc_node!([:query, :nested_array, :not_a_node], root_node)).to raise_error(Elastic::DSL::Errors::NodeNotFound)
+  #     end
+
+  #     it 'when the path ends prematurely' do
+  #       expect(utils.foc_node!([:query, :not_a_node, :jimmy], root_node)).to raise_error(Elastic::DSL::Errors::NodeNotFound)
+  #     end
+
+  #   end
+
+  # end
+
+  describe '.create_nodes!' do
+    let(:root_node) { {query: nil} }
+    let(:result) { {query: {ashleigh: {frank: {jimmy: {}}}}} }
+
+    it 'creates the nodes' do
+      utils.create_nodes!([:query, :ashleigh, :frank, :jimmy], root_node)
+      expect(root_node).to eq(result)
+    end
+
+    it 'returns the parent of the last key' do
+      expect(utils.create_nodes!([:query, :ashleigh, :frank, :jimmy], root_node)).to eq({jimmy: {}})
+    end
+  end
+
   describe '.blank?' do
     it 'returns true for single args' do
       expect(utils.blank?(*[])).to eq(true)
