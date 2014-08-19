@@ -131,6 +131,30 @@ describe Elastic::DSL::Builders::Utils do
 
   end
 
+  describe '.foc_node!' do
+    let(:root_node) { {query: {
+      nested_hash: {ashleigh: true},
+    }} }
+
+    let(:foc_hash) { {query: {
+      nested_hash: {ashleigh: true, not_a_node: nil},
+    }} }
+
+
+    context 'creates the node' do
+
+      it 'when a node doesn\'t exist in a hash' do
+        expect(utils.foc_node!([:query, :nested_hash, :not_a_node], root_node, nil)).to eq(foc_hash[:query][:nested_hash][:not_a_node])
+      end
+
+      xit 'when a node doesn\'t exist in an array' do
+        expect(utils.foc_node!([:query, :nested_array, :not_a_node], root_node, nil)).to eq(foc_hash[:query][:nested_hash][:not_a_node])
+      end
+
+    end
+
+  end
+
   describe '.create_nodes!' do
     let(:root_node) { {query: nil} }
     let(:result) { {query: {ashleigh: {frank: {jimmy: {}}}}} }
