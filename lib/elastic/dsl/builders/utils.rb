@@ -55,17 +55,6 @@ module Elastic
           return root_node
         end
 
-        # Finds or creates the nodes specified and returns the parent of the last key
-        # TODO find better way of passing values than node_keys to allow creation of arrays
-        # Ideally allow for objects to be searched for too
-        def foc_node!(node_keys, root_node, node)
-          parent = find_node(node_keys, root_node)
-        rescue Elastic::DSL::Errors::NodeNotFound => e
-          parent = find_node(node_keys[0..e.index-1], root_node)
-          parent = create_nodes!(node_keys[e.index-1..-2], parent)
-          parent[node_keys[-1]] = node
-        end
-
         # creates the nodes overwriting any old ones, returning the parent node of the last key
         def create_nodes!(node_keys, parent)
           last_parent = nil

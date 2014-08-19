@@ -1,7 +1,6 @@
 # ChangeLog
 
-V 0.0.3
- - [Feature] Added Range Filter
+V 0.0.3-pre
  - [Feature] Added Tests for Errors
  - **[Breaking Change]** Renamed Error base class to Error and moved to ../exceptions.rb
 
