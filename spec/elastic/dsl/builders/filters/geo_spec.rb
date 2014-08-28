@@ -21,6 +21,7 @@ describe Elastic::DSL::Builders::Filters::Geo do
   describe '.geo_distance' do
 
     it 'creates a geo_distance filter' do
+      builder = Elastic::DSL::SearchBuilder.new(query: {})
       expect(builder.geo_distance(lat, lon, '10km').es_query).to eq(result)
     end
 
