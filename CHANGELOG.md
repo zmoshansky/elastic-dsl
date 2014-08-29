@@ -1,7 +1,10 @@
 # ChangeLog
 
-V 0.0.3-pre
+V 0.0.3
  - [Feature] Added Tests for Errors
+ - [Feature] one_of_these added to bool to do a nested should inside a must (great for categories)
+ - [Feature] bool accepts an options[:filter] set to true to enable filtering
+ - [Warning] bool moved to core module as it's used by a lot of things
  - **[Breaking Change]** Renamed Error base class to Error and moved to ../exceptions.rb
 
 V 0.0.2

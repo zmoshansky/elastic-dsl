@@ -1,8 +1,8 @@
 module Elastic::DSL::Builders::Interface
 
   def elastic_dsl_methods
-    set_union = Elastic::DSL::Builders::Queries::All.instance_methods | Elastic::DSL::Builders::Filters::All.instance_methods
-    intersect = Elastic::DSL::Builders::Queries::All.instance_methods & Elastic::DSL::Builders::Filters::All.instance_methods
+    set_union = Elastic::DSL::Builders::Core::All.instance_methods | Elastic::DSL::Builders::Filters::All.instance_methods#| Elastic::DSL::Builders::Queries::All.instance_methods
+    intersect = Elastic::DSL::Builders::Core::All.instance_methods & Elastic::DSL::Builders::Filters::All.instance_methods#& Elastic::DSL::Builders::Queries::All.instance_methods
     return set_union - intersect
   end
 
