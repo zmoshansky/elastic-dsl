@@ -1,6 +1,7 @@
 module Elastic
   module DSL
     class SearchBuilder
+      include Elastic::DSL::Builders::Core::All
       include Elastic::DSL::Builders::Queries::All
       include Elastic::DSL::Builders::Filters::All
       include Elastic::DSL::Builders::Interface
