@@ -1,5 +1,5 @@
 module Elastic
   module DSL
-    VERSION = '0.0.3-pre'
+    VERSION = '0.0.3'
   end
 end
